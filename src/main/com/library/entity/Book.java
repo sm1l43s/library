@@ -1,5 +1,7 @@
 package main.com.library.entity;
 
+import java.util.List;
+
 public class Book {
 
     private int id;
@@ -8,12 +10,7 @@ public class Book {
     private int quantity;
     private Author author;
 
-    public Book(String name, Long yearPublish, int quantity, Author author) {
-        this.name = name;
-        this.yearPublish = yearPublish;
-        this.quantity = quantity;
-        this.author = author;
-    }
+    private List<Genres> genres;
 
     public Book(int id, String name, Long yearPublish, int quantity, Author author) {
         this.id = id;
@@ -21,6 +18,24 @@ public class Book {
         this.yearPublish = yearPublish;
         this.quantity = quantity;
         this.author = author;
+    }
+
+    public Book(int id, String name, Long yearPublish, int quantity, Author author, List<Genres> genres) {
+        this.id = id;
+        this.name = name;
+        this.yearPublish = yearPublish;
+        this.quantity = quantity;
+        this.author = author;
+        this.genres = genres;
+    }
+
+    public Book(int id, String name, Long yearPublish, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.yearPublish = yearPublish;
+        this.quantity = quantity;
+        this.author = null;
+        this.genres = null;
     }
 
     public int getId() {
@@ -53,6 +68,22 @@ public class Book {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public List<Genres> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genres> genres) {
+        this.genres = genres;
     }
 
     @Override

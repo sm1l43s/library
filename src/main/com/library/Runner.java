@@ -4,8 +4,10 @@ import main.com.library.dao.impl.AuthorDAOImpl;
 import main.com.library.database.ConnectionPoolImpl;
 import main.com.library.database.DataBaseSetting;
 import main.com.library.database.FilePropertiesReader;
+import main.com.library.entity.Author;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class Runner {
     public static void main(String[] args) {
@@ -26,7 +28,8 @@ public class Runner {
 
         try {
             AuthorDAOImpl authorDAO = new AuthorDAOImpl(connectionPool.getConnection());
-            System.out.println(authorDAO.findById(7));
+            List<Author> authors = authorDAO.findAll();
+            authors.forEach(System.out::println);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

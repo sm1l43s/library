@@ -101,14 +101,9 @@ public class SubscriberDAOImpl implements ISubscriberDAO<Integer, Subscriber> {
     }
 
     private Subscriber extractSubscriberFromResultSet(ResultSet resultSet) throws SQLException {
-        Subscriber subscriber = null;
+        int id = resultSet.getInt("s_id");
+        String name = resultSet.getString("s_name");
 
-        while (resultSet.next()) {
-            int id = resultSet.getInt("s_id");
-            String name = resultSet.getString("s_name");
-            subscriber = new Subscriber(id, name);
-        }
-
-        return subscriber;
+        return new Subscriber(id, name);
     }
 }

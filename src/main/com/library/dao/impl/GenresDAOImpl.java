@@ -103,14 +103,9 @@ public class GenresDAOImpl implements IGenresDAO<Integer, Genres> {
     }
 
     private Genres extractGenresFromResultSet(ResultSet resultSet) throws SQLException {
-        Genres genres = null;
+        int id = resultSet.getInt("g_id");
+        String name = resultSet.getString("g_name");
 
-        while (resultSet.next()) {
-            int id = resultSet.getInt("g_id");
-            String name = resultSet.getString("g_name");
-            genres = new Genres(id, name);
-        }
-
-        return genres;
+        return new Genres(id, name);
     }
 }
