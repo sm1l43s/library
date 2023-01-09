@@ -1,7 +1,9 @@
 package main.com.library.dao;
 
-public interface IAuthorDAO<K, E> extends IBaseDAO <K, E>{
+import java.util.List;
 
+public interface IAuthorDAO<K, E, T> extends IBaseDAO <K, E>{
 
+    List<T> findAllBooksByAuthor(E e);
 
 }

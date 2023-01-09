@@ -1,23 +1,13 @@
 package main.com.library.entity;
 
-import java.util.List;
-
 public class Genres {
 
     private int id;
     public String name;
 
-    List<Book> books;
-
-    public Genres(String name, List<Book> books) {
-        this.name = name;
-        this.books = books;
-    }
-
-    public Genres(int id, String name, List<Book> books) {
+    public Genres(int id, String name) {
         this.id = id;
         this.name = name;
-        this.books = books;
     }
 
     public int getId() {
@@ -36,20 +26,12 @@ public class Genres {
         this.name = name;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 
     @Override
     public String toString() {
         return "Genres{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", books=" + books +
                 '}';
     }
 }

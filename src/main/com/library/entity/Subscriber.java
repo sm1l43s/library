@@ -5,15 +5,9 @@ public class Subscriber {
     private String name;
     private Subscription subscription;
 
-    public Subscriber(String name, Subscription subscription) {
-        this.name = name;
-        this.subscription = subscription;
-    }
-
-    public Subscriber(int id, String name, Subscription subscription) {
+    public Subscriber(int id, String name) {
         this.id = id;
         this.name = name;
-        this.subscription = subscription;
     }
 
     public int getId() {
@@ -45,7 +39,6 @@ public class Subscriber {
         return "Subscriber{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", subscription=" + subscription +
                 '}';
     }
 }

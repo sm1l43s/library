@@ -1,37 +1,26 @@
 package main.com.library.entity;
 
-import java.util.Date;
-import java.util.List;
-
 public class Book {
 
     private int id;
     private String name;
-    private Date yearPublish;
+    private Long yearPublish;
     private int quantity;
-    private Subscription subscription;
-    private List<Genres> genres;
-    private List<Author> authors;
+    private Author author;
 
-    public Book(String name, Date yearPublish, int quantity,
-                Subscription subscription, List<Genres> genres, List<Author> authors) {
+    public Book(String name, Long yearPublish, int quantity, Author author) {
         this.name = name;
         this.yearPublish = yearPublish;
         this.quantity = quantity;
-        this.subscription = subscription;
-        this.genres = genres;
-        this.authors = authors;
+        this.author = author;
     }
 
-    public Book(int id, String name, Date yearPublish, int quantity,
-                Subscription subscription, List<Genres> genres, List<Author> authors) {
+    public Book(int id, String name, Long yearPublish, int quantity, Author author) {
         this.id = id;
         this.name = name;
         this.yearPublish = yearPublish;
         this.quantity = quantity;
-        this.subscription = subscription;
-        this.genres = genres;
-        this.authors = authors;
+        this.author = author;
     }
 
     public int getId() {
@@ -50,11 +39,11 @@ public class Book {
         this.name = name;
     }
 
-    public Date getYearPublish() {
+    public Long getYearPublish() {
         return yearPublish;
     }
 
-    public void setYearPublish(Date yearPublish) {
+    public void setYearPublish(Long yearPublish) {
         this.yearPublish = yearPublish;
     }
 
@@ -66,30 +55,6 @@ public class Book {
         this.quantity = quantity;
     }
 
-    public Subscription getSubscription() {
-        return subscription;
-    }
-
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
-    }
-
-    public List<Genres> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genres> genres) {
-        this.genres = genres;
-    }
-
-    public List<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
-    }
-
     @Override
     public String toString() {
         return "Book{" +
@@ -97,9 +62,6 @@ public class Book {
                 ", name='" + name + '\'' +
                 ", yearPublish=" + yearPublish +
                 ", quantity=" + quantity +
-                ", subscription=" + subscription +
-                ", genres=" + genres +
-                ", authors=" + authors +
                 '}';
     }
 }

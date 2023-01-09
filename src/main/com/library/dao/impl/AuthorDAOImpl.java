@@ -1,13 +1,14 @@
-package main.com.library.dao;
+package main.com.library.dao.impl;
 
+import main.com.library.dao.IAuthorDAO;
 import main.com.library.entity.Author;
+import main.com.library.entity.Book;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class AuthorDAOImpl implements IAuthorDAO<Integer, Author> {
+public class AuthorDAOImpl implements IAuthorDAO<Integer, Author, Book> {
 
     private final Connection connection;
 
@@ -26,6 +27,13 @@ public class AuthorDAOImpl implements IAuthorDAO<Integer, Author> {
     private final String SQL_DELETE_AUTHOR =
             "DELETE FROM authors WHERE a_id = ?";
 
+    private final String SQL_SELECT_ALL_BOOKS_BY_AUTHOR =
+            "SELECT  books.b_id, books.b_name, \n" +
+                    "books.b_year, books.b_quantity\n" +
+                    "FROM m2m_books_authors \n" +
+                    "INNER JOIN books ON m2m_books_authors.b_id = books.b_id \n" +
+                    "WHERE a_id = ?;";
+
     public AuthorDAOImpl(Connection connection) {
         this.connection = connection;
     }
@@ -37,12 +45,12 @@ public class AuthorDAOImpl implements IAuthorDAO<Integer, Author> {
         try (Statement statement = this.connection.createStatement()) {
             ResultSet rs = statement.executeQuery(SQL_SELECT_ALL);
 
+            authors.add(extractAuthorFromResultSet(rs));
             while (rs.next()) {
-                int id = rs.getInt("a_id");
-                String name = rs.getString("a_name");
-                authors.add(new Author(id, name, Collections.EMPTY_LIST));
+                Author author = extractAuthorFromResultSet(rs);
+                author.setBooks(findAllBooksByAuthor(author));
+                authors.add(author);
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -57,17 +65,11 @@ public class AuthorDAOImpl implements IAuthorDAO<Integer, Author> {
         try (PreparedStatement statement = this.connection.prepareStatement(SQL_SELECT_AUTHOR_BY_ID)) {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                int a_id = rs.getInt("a_id");
-                String name = rs.getString("a_name");
-                author = new Author(a_id, name, Collections.EMPTY_LIST);
-            }
-
+            author = extractAuthorFromResultSet(rs);
+            author.setBooks(findAllBooksByAuthor(author));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return author;
     }
 
@@ -114,5 +116,36 @@ public class AuthorDAOImpl implements IAuthorDAO<Integer, Author> {
         }
 
         return newAuthor;
+    }
+
+    @Override
+    public List<Book> findAllBooksByAuthor(Author author) {
+        List<Book> books = new ArrayList<>();
+
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL_SELECT_ALL_BOOKS_BY_AUTHOR)) {
+            statement.setInt(1, author.getId());
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("b_id");
+                String name = rs.getString("b_name");
+                Long year = rs.getLong("b_year");
+                int quantity = rs.getInt("b_quantity");
+                books.add(new Book(id, name, year, quantity, author));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return books;
+    }
+
+    private Author extractAuthorFromResultSet(ResultSet resultSet) throws SQLException {
+        Author author = null;
+        while (resultSet.next()) {
+            int id = resultSet.getInt("a_id");
+            String name = resultSet.getString("a_name");
+            author = new Author(id, name);
+        }
+        return author;
     }
 }
