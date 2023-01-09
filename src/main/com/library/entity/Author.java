@@ -6,25 +6,21 @@ public class Author {
 
     private int id;
     private String name;
-    private List<Author> author;
+    private List<Book> books;
 
-    public Author(String name, List<Author> author) {
+    public Author(String name, List<Book> books) {
         this.name = name;
-        this.author = author;
+        this.books = books;
     }
 
-    public Author(int id, String name, List<Author> author) {
+    public Author(int id, String name, List<Book> books) {
         this.id = id;
         this.name = name;
-        this.author = author;
+        this.books = books;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -35,12 +31,12 @@ public class Author {
         this.name = name;
     }
 
-    public List<Author> getAuthor() {
-        return author;
+    public List<Book> getBooks() {
+        return books;
     }
 
-    public void setAuthor(List<Author> author) {
-        this.author = author;
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class Author {
         return "Author{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", author=" + author +
+                ", books=" + books +
                 '}';
     }
 }

@@ -12,6 +12,8 @@ public class FilePropertiesReader {
 
     public FilePropertiesReader(String pathToFile) {
         this.pathToFile = pathToFile;
+        this.properties = new Properties();
+        read();
     }
 
     private void read() {

@@ -15,7 +15,7 @@ public class DataBaseSetting {
         this.dbName = properties.getProperty("db.name");
         this.user = properties.getProperty("db.user");
         this.password = properties.getProperty("db.password");
-        this.dbDriver = properties.getProperty("db.Driver");
+        this.dbDriver = properties.getProperty("db.driver");
     }
 
     public String getUrl() {
