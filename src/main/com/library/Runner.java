@@ -1,10 +1,11 @@
 package main.com.library;
 
 import main.com.library.dao.impl.AuthorDAOImpl;
+import main.com.library.dao.impl.BookDAOImpl;
 import main.com.library.database.ConnectionPoolImpl;
 import main.com.library.database.DataBaseSetting;
 import main.com.library.database.FilePropertiesReader;
-import main.com.library.entity.Author;
+import main.com.library.entity.Book;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -28,8 +29,9 @@ public class Runner {
 
         try {
             AuthorDAOImpl authorDAO = new AuthorDAOImpl(connectionPool.getConnection());
-            List<Author> authors = authorDAO.findAll();
-            authors.forEach(System.out::println);
+            BookDAOImpl bookDAO = new BookDAOImpl(connectionPool.getConnection());
+            List<Book> books = bookDAO.findAll();
+            books.forEach(System.out::println);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
