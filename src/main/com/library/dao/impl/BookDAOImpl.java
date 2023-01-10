@@ -3,12 +3,13 @@ package main.com.library.dao.impl;
 import main.com.library.dao.IBookDAO;
 import main.com.library.entity.Author;
 import main.com.library.entity.Book;
+import main.com.library.entity.Genres;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDAOImpl implements IBookDAO<Integer, Book, Author> {
+public class BookDAOImpl implements IBookDAO<Integer, Book> {
 
     private final String SQL_SELECT_ALL =
             "SELECT * FROM books";
@@ -31,6 +32,13 @@ public class BookDAOImpl implements IBookDAO<Integer, Book, Author> {
                     "FROM m2m_books_authors \n" +
                     "INNER JOIN books ON m2m_books_authors.b_id = books.b_id \n" +
                     "WHERE a_id = ?;";
+
+    private final String SQL_SELECT_ALL_BOOKS_BY_GENRES =
+            "SELECT books.b_id, books.b_name, \n" +
+                    "books.b_year, books.b_quantity\n" +
+                    "FROM library.m2m_books_genres\n" +
+                    "INNER JOIN books ON m2m_books_genres.b_id = books.b_id\n" +
+                    "WHERE m2m_books_genres.g_id = ?";
 
 
     private final Connection connection;
@@ -116,11 +124,22 @@ public class BookDAOImpl implements IBookDAO<Integer, Book, Author> {
             statement.setInt(1, author.getId());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("b_id");
-                String name = rs.getString("b_name");
-                Long year = rs.getLong("b_year");
-                int quantity = rs.getInt("b_quantity");
-                books.add(new Book(id, name, year, quantity, author));
+                books.add(extractBookFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> findAllBooksByGenres(Genres genres) {
+        List<Book> books = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(SQL_SELECT_ALL_BOOKS_BY_AUTHOR)) {
+            statement.setInt(1, genres.getId());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                books.add(extractBookFromResultSet(rs));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
